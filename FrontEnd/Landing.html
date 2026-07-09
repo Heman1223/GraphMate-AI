@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title> GraphMate: A Friend Recommendation System</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Poppins:wght@600;800&display=swap" rel="stylesheet" />
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, Arial, sans-serif;
+  background: linear-gradient(135deg, #dbe4f0, #f0f4f8);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Center area */
+main.main-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Glass container */
+.glass-box {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 1000px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+/* Title */
+.hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  letter-spacing: 1px;
+  animation: fadeUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+/* Subtitle */
+.subtitle {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 25px;
+  line-height: 1.6;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 10px 16px;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+/* Features grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* Feature cards */
+.feature-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  text-align: center;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #2563eb, #6a11cb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+
+.feature-card p {
+  font-size: 0.95rem;
+  color: #374151;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Button */
+.btn {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  padding: 14px 32px;
+  margin-top: 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.05rem;
+  font-weight: 600;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7280;
+  backdrop-filter: blur(8px);
+}
+
+body {
+  background: linear-gradient(135deg, rgba(173, 216, 230, 0.3), rgba(240, 248, 255, 0.3));
+  backdrop-filter: blur(10px);
+  font-family: Arial, sans-serif;
+}
+
+.feature-card {
+  text-align: center;
+}
+
+.feature-icon {
+  font-size: 2rem;
+  color: #4a90e2;
+  margin-bottom: 0.5rem;
+}
+
+
+</style>
+</head>
+<body style="background: linear-gradient(135deg, rgba(173, 216, 230, 0.3), rgba(240, 248, 255, 0.3)); backdrop-filter: blur(10px);">
+  <main class="main-center">
+    <div class="glass-box">
+      <h1 class="hero-title">Friend Recommendation System</h1>
+      <p class="subtitle">
+        Discover and connect with new friends using advanced graph algorithms and shared interest analysis.
+      </p>
+      <button class="btn" onclick="window.location.href='index.html'">Let's Connect</button>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <i class="fas fa-project-diagram feature-icon"></i>
+          <h2>Data Structure Used</h2>
+          <p>Adjacency list for the social graph with hash sets for quick interest lookups.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-route feature-icon"></i>
+          <h2>Algorithm</h2>
+          <p>BFS explores up to 2 degrees of separation and calculates mutual interests.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-clock feature-icon"></i>
+          <h2>Time Complexity</h2>
+          <p>O(V + E) for traversal plus O(I) for interest matching.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-chart-line feature-icon"></i>
+          <h2>Scalability</h2>
+          <p>Optimized for large networks with efficient space and time performance.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-users feature-icon"></i>
+          <h2>Real-world Use</h2>
+          <p>Similar concepts power friend suggestions on major social platforms.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-lightbulb feature-icon"></i>
+          <h2>Why It Works</h2>
+          <p>Combines graph theory and interest similarity to suggest relevant friends.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    Developed by Heman © 2025
+  </footer>
+
+  <!-- Font Awesome for icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>

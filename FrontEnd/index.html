@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Friend Recommendation · Demo</title>
+   
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/vis-network@9.1.2/dist/vis-network.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<div class="glass-container">
+<body>
+
+  <div class="app">
+    
+    <header class="topbar">
+      <div class="title">
+        <h1>GraphMate: A Friend Recommendation System</h1>
+        <p class="muted">C++-style algorithm · HTML · CSS · JavaScript</p>
+      </div>
+      
+      <div class="actions">
+        <button id="btnLoadSample">Load Sample</button>
+        <button id="btnClear">Reset</button>
+        <button onclick="window.location.href='landing.html'">Home</button>
+      </div>
+      
+    </header>
+
+    <main class="main">
+      <section class="left">
+        <div class="card">
+          <h3>Add Friend</h3>
+          <input id="friendA" placeholder="User A"/>
+          <input id="friendB" placeholder="User B"/>
+          <div class="row">
+            <button id="btnAddFriend">Add Connection</button>
+          </div>
+          <small class="muted">Names are normalized (trim + lowercased).</small>
+        </div>
+
+        <div class="card">
+          <h3>Add Interests (multiple)</h3>
+          <input id="interestUser" placeholder="User"/>
+          <div class="row">
+            <input id="interestText" placeholder="Type interest (press Add)"/>
+            <button id="btnAddInterest">Add</button>
+          </div>
+          <div id="interestChips" class="chips"></div>
+          <small class="muted">Interests saved per user; type several and press Add for each.</small>
+        </div>
+
+        <div class="card">
+          <h3>Get Suggestions</h3>
+          <input id="suggestUser" placeholder="User for suggestions"/>
+          <div class="row">
+            <button id="btnSuggest">Suggest</button>
+          </div>
+          <div id="results"></div>
+        </div>
+      </section>
+
+      <section class="right">
+        <div class="card graph-card">
+          <div id="network"></div>
+        </div>
+
+        <div class="card small">
+          <h4>How ranking works</h4>
+          <ul>
+            <li><strong>Mutual friends</strong> weighted ×2</li>
+            <li><strong>Shared interests</strong> weighted ×1</li>
+            <li>Candidates exclude existing friends & the user</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <small class="muted">
+        Code By - Heman Sharma · 12308420 &nbsp;|&nbsp;
+        <a href="https://github.com/Heman1223" target="_blank" aria-label="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+        &nbsp;
+        <a href="https://www.linkedin.com/in/heman-sharma-657619284" target="_blank" aria-label="LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </small>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</div>
+</html>
+

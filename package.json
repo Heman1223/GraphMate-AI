@@ -1,0 +1,21 @@
+{
+  "name": "graphmate",
+  "version": "1.0.0",
+  "description": "AI-Powered Friend Recommendation & Network Visualization Platform",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "dev:ai": "cd ai-service && uvicorn app.main:app --reload --port 8000",
+    "build": "cd client && npm run build",
+    "seed": "cd server && npx ts-node src/utils/seed.ts",
+    "install:all": "npm install && cd client && npm install && cd ../server && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "keywords": ["friend-recommendation", "social-network", "graph-algorithms", "ai", "machine-learning"],
+  "author": "",
+  "license": "MIT"
+}
