@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, useMemo } from 'react';
+import React, { useRef, useState, useCallback, useMemo, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import type { INetworkData, IGraphNode, IGraphEdge } from '../../types';
 import { useTheme } from '../../context/ThemeContext';
@@ -11,10 +11,10 @@ interface NetworkGraphProps {
 
 export default function NetworkGraph({ data, onNodeClick }: NetworkGraphProps) {
   const { resolvedTheme } = useTheme();
-  const fgRef = useRef<any>();
-  const [hoverNode, setHoverNode] = useState<IGraphNode | null>(null);
-  const [highlightNodes, setHighlightNodes] = useState(new Set());
-  const [highlightLinks, setHighlightLinks] = useState(new Set());
+  const fgRef = useRef<any>(null);
+  const [hoverNode, setHoverNode] = useState<any | null>(null);
+  const [highlightNodes, setHighlightNodes] = useState<Set<string>>(new Set());
+  const [highlightLinks, setHighlightLinks] = useState<Set<any>>(new Set());
 
   // Image cache
   const imgCache = useMemo(() => {
@@ -33,13 +33,13 @@ export default function NetworkGraph({ data, onNodeClick }: NetworkGraphProps) {
     setHighlightLinks(new Set());
 
     if (node) {
-      const newHighlightNodes = new Set();
-      const newHighlightLinks = new Set();
+      const newHighlightNodes = new Set<string>();
+      const newHighlightLinks = new Set<any>();
       newHighlightNodes.add(node.id);
 
       data.edges.forEach(edge => {
-        const sourceId = typeof edge.source === 'object' ? edge.source.id : edge.source;
-        const targetId = typeof edge.target === 'object' ? edge.target.id : edge.target;
+        const sourceId = typeof edge.source === 'object' ? (edge.source as any).id : edge.source;
+        const targetId = typeof edge.target === 'object' ? (edge.target as any).id : edge.target;
         
         if (sourceId === node.id || targetId === node.id) {
           newHighlightLinks.add(edge);
@@ -61,6 +61,15 @@ export default function NetworkGraph({ data, onNodeClick }: NetworkGraphProps) {
     fgRef.current?.zoom(4, 1000);
   }, [onNodeClick]);
 
+  // Auto-fit on data load
+  useEffect(() => {
+    if (data.nodes.length > 0 && fgRef.current) {
+      setTimeout(() => {
+        fgRef.current?.zoomToFit(800, 50, (node: any) => true);
+      }, 500); // Small delay to let the force engine settle
+    }
+  }, [data]);
+
   const isDark = resolvedTheme === 'dark';
 
   return (
@@ -80,6 +89,11 @@ export default function NetworkGraph({ data, onNodeClick }: NetworkGraphProps) {
         onNodeClick={handleNodeClick}
         d3AlphaDecay={0.01}
         d3VelocityDecay={0.08}
+        minZoom={0.5}
+        maxZoom={8}
+        onEngineStop={() => {
+           // Optionally fit again if needed when engine stops
+        }}
         nodeCanvasObject={(node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
           const isHighlighted = highlightNodes.has(node.id);
           const isDimmed = highlightNodes.size > 0 && !isHighlighted;

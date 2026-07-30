@@ -1,10 +1,13 @@
 export const APP_NAME = 'GraphMate';
 export const API_URL = import.meta.env.VITE_API_URL || '/api';
 
-export const AVATAR_STYLES = [
-  'adventurer', 'avataaars', 'big-ears', 'bottts', 'croodles',
-  'fun-emoji', 'lorelei', 'micah', 'miniavs', 'notionists',
-  'open-peeps', 'personas', 'pixel-art', 'thumbs',
+export const AVATAR_COLORS = [
+  '7c3aed', // Violet
+  '2563eb', // Blue
+  '059669', // Emerald
+  'ea580c', // Orange
+  'be185d', // Pink
+  '0f766e', // Teal
 ];
 
 export function getAvatarUrl(seed: string): string {
@@ -12,8 +15,8 @@ export function getAvatarUrl(seed: string): string {
   for (let i = 0; i < seed.length; i++) {
     hash = seed.charCodeAt(i) + ((hash << 5) - hash);
   }
-  const style = AVATAR_STYLES[Math.abs(hash) % AVATAR_STYLES.length];
-  return `https://api.dicebear.com/9.x/${style}/svg?seed=${encodeURIComponent(seed)}`;
+  const color = AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+  return `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(seed)}&backgroundColor=${color}&fontFamily=Inter&fontWeight=700&textColor=ffffff`;
 }
 
 export function getUserAvatar(user: { profilePicture?: string; username?: string; name?: string }): string {

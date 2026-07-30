@@ -141,6 +141,10 @@ export interface IGraphNode {
   label: string;
   avatar: string;
   type: 'self' | 'friend' | 'mutual' | 'suggested';
+  username?: string;
+  college?: string;
+  branch?: string;
+  city?: string;
 }
 
 export interface IGraphEdge {
@@ -168,6 +172,7 @@ export interface IDashboardStats {
   pendingRequests: number;
   aiMatchAccuracy: number;
   profileViews: number;
+  totalUsers?: number;
 }
 
 export interface IFriendGrowth {

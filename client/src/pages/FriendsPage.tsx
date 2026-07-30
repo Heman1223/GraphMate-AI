@@ -120,12 +120,19 @@ export default function FriendsPage() {
         </div>
       ) : activeTab === 'all' ? (
         friends.length === 0 ? (
-          <div className="py-20 text-center flex flex-col items-center justify-center">
-            <span className="text-5xl mb-4">🤝</span>
-            <h3 className="font-bold text-lg text-text-primary-light dark:text-text-primary-dark">No connections yet</h3>
-            <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark mt-2">
-              Go explore AI recommendations or search profiles to build your social network map.
+          <div className="py-20 flex flex-col items-center justify-center text-center max-w-md mx-auto">
+            <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+              <svg className="w-10 h-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-black text-foreground mb-3">No connections yet</h3>
+            <p className="text-muted-foreground text-sm mb-8">
+              Your professional network is waiting. Discover like-minded people using our AI match engine.
             </p>
+            <a href="/dashboard" className="px-6 py-3 bg-primary text-primary-foreground rounded-full font-bold hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
+              Discover Matches
+            </a>
           </div>
         ) : (
           <motion.div
@@ -151,10 +158,14 @@ export default function FriendsPage() {
           </motion.div>
         )
       ) : requests.length === 0 ? (
-        <div className="py-20 text-center flex flex-col items-center justify-center">
-          <span className="text-5xl mb-4">✉️</span>
-          <h3 className="font-bold text-lg text-text-primary-light dark:text-text-primary-dark">No pending requests</h3>
-          <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark mt-2">
+        <div className="py-20 flex flex-col items-center justify-center text-center max-w-md mx-auto">
+          <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-6">
+            <svg className="w-10 h-10 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 className="text-xl font-bold text-foreground mb-3">No pending requests</h3>
+          <p className="text-muted-foreground text-sm">
             Incoming friendship invitations will appear here.
           </p>
         </div>

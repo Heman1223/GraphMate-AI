@@ -59,15 +59,15 @@ export default function FriendCard({ friend, onUnfriend }: FriendCardProps) {
           )}
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-1">
+        <div className="mt-4 flex flex-wrap gap-1.5 overflow-hidden">
           {friend.skills?.slice(0, 3).map((skill) => (
-            <span key={skill} className="px-2 py-0.5 rounded text-[10px] font-bold bg-muted text-foreground border border-border">
+            <span key={skill} className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-muted text-foreground border border-border truncate max-w-[120px]">
               {skill}
             </span>
           ))}
           {friend.skills && friend.skills.length > 3 && (
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-muted text-foreground border border-border">
-              +{friend.skills.length - 3}
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-violet-500/10 text-violet-600 dark:text-violet-400 border border-violet-500/20 shrink-0">
+              +{friend.skills.length - 3} more
             </span>
           )}
         </div>

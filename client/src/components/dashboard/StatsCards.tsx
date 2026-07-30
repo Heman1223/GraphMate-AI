@@ -32,7 +32,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
     const timer = setInterval(() => {
       step++;
       setCounts({
-        totalUsers: Math.floor((stats.totalUsers / steps) * step),
+        totalUsers: Math.floor(((stats.totalUsers || 0) / steps) * step),
         friends: Math.floor((stats.friendsCount / steps) * step),
         accuracy: Math.floor((stats.aiMatchAccuracy / steps) * step),
         views: Math.floor((stats.profileViews / steps) * step)
@@ -41,7 +41,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       if (step >= steps) {
         clearInterval(timer);
         setCounts({
-          totalUsers: stats.totalUsers,
+          totalUsers: stats.totalUsers || 0,
           friends: stats.friendsCount,
           accuracy: stats.aiMatchAccuracy,
           views: stats.profileViews

@@ -12,6 +12,7 @@ import {
   PieChart, 
   Pie 
 } from 'recharts';
+import Skeleton from '../components/ui/Skeleton';
 import Card from '../components/ui/Card';
 import { useTheme } from '../context/ThemeContext';
 import { analyticsService } from '../services/analytics.service';
@@ -54,9 +55,12 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="space-y-6 py-10 flex flex-col items-center justify-center">
-        <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-xs text-text-secondary-light dark:text-text-secondary-dark">Aggregating graph metadata analytics...</p>
+      <div className="space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Skeleton.SkeletonChart />
+          <Skeleton.SkeletonChart />
+          <Skeleton.SkeletonChart className="lg:col-span-2" />
+        </div>
       </div>
     );
   }
@@ -87,10 +91,16 @@ export default function AnalyticsPage() {
           <div className="flex-1 w-full text-xs">
             <ResponsiveContainer width="100%" height="90%">
               <LineChart data={growth}>
-                <XAxis dataKey="date" stroke="#94a3b8" />
-                <YAxis stroke="#94a3b8" />
-                <Tooltip contentStyle={tooltipStyle} />
-                <Line type="monotone" dataKey="count" stroke="#7c3aed" strokeWidth={3} dot={{ r: 4 }} />
+                <defs>
+                  <linearGradient id="colorGrowth" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="date" stroke="var(--muted-foreground)" fontSize={10} tickLine={false} axisLine={false} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={10} tickLine={false} axisLine={false} />
+                <Tooltip contentStyle={tooltipStyle} itemStyle={{ color: '#8b5cf6', fontWeight: 'bold' }} cursor={{ stroke: 'var(--border)', strokeWidth: 1, strokeDasharray: '4 4' }} />
+                <Line type="monotone" dataKey="count" stroke="#8b5cf6" strokeWidth={3} dot={{ r: 4, fill: '#8b5cf6', strokeWidth: 2, stroke: 'var(--background)' }} activeDot={{ r: 6, fill: '#8b5cf6', stroke: 'var(--background)' }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -103,13 +113,19 @@ export default function AnalyticsPage() {
           </h3>
           <div className="flex-1 w-full text-xs">
             <ResponsiveContainer width="100%" height="90%">
-              <BarChart data={skills}>
-                <XAxis dataKey="skill" stroke="#94a3b8" />
-                <YAxis stroke="#94a3b8" />
-                <Tooltip contentStyle={tooltipStyle} cursor={{ fill: resolvedTheme === 'dark' ? '#27272a' : '#f4f4f5' }} />
-                <Bar dataKey="count" fill="#3b82f6" radius={[8, 8, 0, 0]}>
+              <BarChart data={skills} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#8b5cf6" stopOpacity={1}/>
+                    <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="skill" stroke="var(--muted-foreground)" fontSize={10} tickLine={false} axisLine={false} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={10} tickLine={false} axisLine={false} />
+                <Tooltip contentStyle={tooltipStyle} cursor={{ fill: 'var(--muted)', opacity: 0.4 }} itemStyle={{ fontWeight: 'bold' }} />
+                <Bar dataKey="count" fill="url(#barGradient)" radius={[6, 6, 0, 0]} barSize={30}>
                   {skills.map((_, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell key={`cell-${index}`} />
                   ))}
                 </Bar>
               </BarChart>

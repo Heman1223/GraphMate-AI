@@ -65,6 +65,13 @@ export const getFriendGrowth = async (
     const startDate = new Date();
     startDate.setMonth(startDate.getMonth() - months);
 
+    // Baseline: total friends before the start date
+    const baseline = await Friendship.countDocuments({
+      $or: [{ requester: userId }, { recipient: userId }],
+      status: 'accepted',
+      updatedAt: { $lt: startDate },
+    });
+
     const growth = await Friendship.aggregate([
       {
         $match: {
@@ -84,32 +91,30 @@ export const getFriendGrowth = async (
       },
       {
         $sort: { '_id.year': 1, '_id.month': 1 },
-      },
-      {
-        $project: {
-          _id: 0,
-          year: '$_id.year',
-          month: '$_id.month',
-          count: 1,
-        },
-      },
+      }
     ]);
 
-    // Fill in missing months with zero
+    // Fill in missing months with zero and calculate cumulative sum
     const result: { date: string; count: number }[] = [];
     const now = new Date();
+    let currentTotal = baseline;
+
     for (let i = months - 1; i >= 0; i--) {
       const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const year = date.getFullYear();
       const month = date.getMonth() + 1;
 
       const found = growth.find(
-        (g: any) => g.year === year && g.month === month
+        (g: any) => g._id.year === year && g._id.month === month
       );
+
+      if (found) {
+        currentTotal += found.count;
+      }
 
       result.push({
         date: date.toLocaleString('default', { month: 'short', year: 'numeric' }),
-        count: found ? found.count : 0,
+        count: currentTotal,
       });
     }
 

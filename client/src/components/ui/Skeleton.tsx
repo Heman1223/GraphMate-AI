@@ -86,7 +86,17 @@ export function SkeletonAvatar({
   );
 }
 
+export function SkeletonChart({ className, height = 'h-[300px]' }: { className?: string; height?: string }) {
+  return (
+    <div className={cn('glass-card p-6 flex flex-col', className)}>
+      <div className="skeleton rounded h-5 w-1/3 mb-6" />
+      <div className={cn('skeleton rounded-xl w-full', height)} />
+    </div>
+  );
+}
+
 Skeleton.SkeletonCard = SkeletonCard;
 Skeleton.SkeletonText = SkeletonText;
 Skeleton.SkeletonAvatar = SkeletonAvatar;
+Skeleton.SkeletonChart = SkeletonChart;
 

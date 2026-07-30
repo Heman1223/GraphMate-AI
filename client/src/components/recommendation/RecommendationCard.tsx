@@ -16,19 +16,20 @@ import {
 
 interface RecommendationCardProps {
   recommendation: IRecommendation;
-  onConnect: () => void;
+  onConnect: () => Promise<void> | void;
   onSkip: () => void;
   active: boolean;
+  indexOffset: number;
   zIndex: number;
 }
 
-export default function RecommendationCard({ recommendation, onConnect, onSkip, active, zIndex }: RecommendationCardProps) {
+export default function RecommendationCard({ recommendation, onConnect, onSkip, active, indexOffset, zIndex }: RecommendationCardProps) {
   const { user, score, graphScore, aiScore, explanation } = recommendation;
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-10, 10]);
   const opacity = useTransform(x, [-200, -100, 0, 100, 200], [0, 1, 1, 1, 0]);
-  const scale = active ? 1 : 0.95;
-  const yOffset = active ? 0 : 20;
+  const scale = 1 - (indexOffset * 0.05); // e.g. 1, 0.95, 0.90
+  const yOffset = indexOffset * 25; // e.g. 0, 25, 50
 
   const handleDragEnd = (event: any, info: any) => {
     if (info.offset.x > 100) {
@@ -90,20 +91,14 @@ export default function RecommendationCard({ recommendation, onConnect, onSkip, 
                   Graph {Math.round(graphScore)}%
                 </span>
               </div>
-              <div className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border ${
-                explanation.aiAvailable 
-                  ? 'bg-violet-500/10 border-violet-500/20' 
-                  : 'bg-muted/50 border-border'
-              }`}>
-                <HiOutlineCpuChip className={`w-3.5 h-3.5 ${explanation.aiAvailable ? 'text-violet-500' : 'text-muted-foreground'}`} />
-                <span className={`text-[11px] font-bold ${
-                  explanation.aiAvailable 
-                    ? 'text-violet-600 dark:text-violet-400' 
-                    : 'text-muted-foreground'
-                }`}>
-                  {explanation.aiAvailable ? `AI ${Math.round(aiScore)}%` : 'AI Offline'}
-                </span>
-              </div>
+              {explanation.aiAvailable && (
+                <div className="flex items-center gap-1 px-2.5 py-1 rounded-lg border bg-violet-500/10 border-violet-500/20">
+                  <HiOutlineCpuChip className="w-3.5 h-3.5 text-violet-500" />
+                  <span className="text-[11px] font-bold text-violet-600 dark:text-violet-400">
+                    AI {Math.round(aiScore)}%
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className="w-full space-y-4">
@@ -140,12 +135,17 @@ export default function RecommendationCard({ recommendation, onConnect, onSkip, 
                 </p>
               )}
 
-              <div className="flex flex-wrap justify-center gap-2 mt-4">
-                {(user.skills || []).map((skill, idx) => (
-                  <span key={idx} className="px-3 py-1 text-xs font-bold rounded-full bg-primary/10 text-primary border border-primary/20">
+              <div className="flex flex-wrap justify-center gap-2 mt-4 overflow-hidden">
+                {(user.skills || []).slice(0, 5).map((skill, idx) => (
+                  <span key={idx} className="px-3 py-1 text-xs font-bold rounded-full bg-primary/10 text-primary border border-primary/20 truncate max-w-[140px]">
                     {skill}
                   </span>
                 ))}
+                {(user.skills || []).length > 5 && (
+                  <span className="px-3 py-1 text-xs font-bold rounded-full bg-muted text-muted-foreground border border-border shrink-0">
+                    +{(user.skills || []).length - 5} more
+                  </span>
+                )}
               </div>
 
               <div className="mt-8 text-left w-full bg-muted/30 p-4 rounded-2xl border border-border/50">

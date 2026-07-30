@@ -30,15 +30,14 @@ export default function Card({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
       whileHover={
-        hover
+        hover && !className?.includes('glass-card')
           ? { y: -2, boxShadow: '0 8px 30px rgba(0,0,0,0.04)' }
           : undefined
       }
       onClick={onClick}
       className={cn(
-        'bg-card text-card-foreground border border-border rounded-xl shadow-sm transition-all duration-300',
+        'glass-card relative',
         onClick && 'cursor-pointer',
-        hover && 'hover:border-primary/20',
         paddingClasses[padding],
         className
       )}

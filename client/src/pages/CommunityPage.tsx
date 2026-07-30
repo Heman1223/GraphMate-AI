@@ -127,68 +127,91 @@ export default function CommunityPage() {
               </div>
             </div>
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-card/30">
+            {/* Create Post Input */}
+            <div className="p-6 border-b border-border/50 bg-card/50 backdrop-blur z-10">
+              <form onSubmit={handleSendMessage} className="flex gap-4">
+                <img src={user?.profilePicture || `https://api.dicebear.com/9.x/initials/svg?seed=${user?.username || 'U'}&backgroundColor=7c3aed&fontFamily=Inter`} alt="You" className="w-12 h-12 rounded-full shadow-sm object-cover" />
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Share something with the global network..."
+                    className="w-full bg-surface border border-border/50 rounded-2xl px-5 py-3 text-[15px] focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
+                  />
+                  <div className="flex justify-between items-center mt-3">
+                    <div className="flex gap-2">
+                      <button type="button" className="p-2 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-xl transition-colors flex items-center gap-2 text-xs font-semibold">
+                        <FiImage className="w-4 h-4" /> Media
+                      </button>
+                      <button type="button" className="p-2 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-xl transition-colors flex items-center gap-2 text-xs font-semibold">
+                        <FiCode className="w-4 h-4" /> Code
+                      </button>
+                    </div>
+                    <button 
+                      type="submit"
+                      disabled={!newMessage.trim()}
+                      className="px-6 py-2 bg-primary text-primary-foreground rounded-full font-bold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg shadow-primary/20"
+                    >
+                      Post
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            {/* Feed Posts */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-surface/30">
               {messages.length === 0 && (
-                <div className="text-center py-10 text-muted-foreground text-sm font-semibold">
-                  Welcome to the {globalCommunity.name}! Be the first to say hello!
+                <div className="text-center py-20 text-muted-foreground text-sm font-semibold">
+                  Welcome to the {globalCommunity.name}! Be the first to start a discussion.
                 </div>
               )}
-              {messages.map((msg, idx) => {
-                const isMe = msg.sender?._id === user?._id || msg.sender === user?._id;
-                
+              {messages.slice().reverse().map((msg, idx) => {
                 return (
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     key={msg._id || idx} 
-                    className={`flex gap-3 max-w-[85%] ${isMe ? 'ml-auto flex-row-reverse' : ''}`}
+                    className="glass-card p-5 w-full max-w-3xl mx-auto"
                   >
-                    {!isMe && (
-                      <img src={msg.sender.profilePicture || `https://api.dicebear.com/7.x/initials/svg?seed=${msg.sender.username}`} alt="" className="w-10 h-10 rounded-full mt-auto shadow-sm" />
-                    )}
-                    <div className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
-                      {!isMe && (
-                        <span className="text-[10px] font-bold text-muted-foreground mb-1 ml-1 tracking-wide">{msg.sender.name}</span>
-                      )}
-                      <div className={`px-4 py-3 rounded-2xl text-[15px] leading-relaxed ${isMe ? 'bg-blue-600 text-white rounded-br-sm shadow-md shadow-blue-500/20' : 'bg-card border border-border rounded-bl-sm shadow-sm'}`}>
-                        {msg.content}
+                    {/* Post Header */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <img src={msg.sender.profilePicture || `https://api.dicebear.com/9.x/initials/svg?seed=${msg.sender.username || 'U'}&backgroundColor=2563eb&fontFamily=Inter`} alt="" className="w-10 h-10 rounded-full shadow-sm object-cover" />
+                      <div>
+                        <h4 className="text-sm font-bold text-foreground">{msg.sender.name}</h4>
+                        <p className="text-[11px] font-semibold text-muted-foreground">
+                          @{msg.sender.username} • {new Date(msg.createdAt).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        </p>
                       </div>
-                      <span className="text-[9px] font-semibold text-muted-foreground mt-1 mx-1">
-                        {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
+                    </div>
+                    
+                    {/* Post Content */}
+                    <p className="text-[15px] leading-relaxed text-foreground mb-4 whitespace-pre-wrap">
+                      {msg.content}
+                    </p>
+
+                    {/* Post Footer / Actions */}
+                    <div className="flex items-center gap-6 pt-4 border-t border-border/50 text-muted-foreground">
+                      <button className="flex items-center gap-2 hover:text-primary transition-colors text-xs font-bold">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                        </svg>
+                        Like
+                      </button>
+                      <button className="flex items-center gap-2 hover:text-primary transition-colors text-xs font-bold">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                        Comment
+                      </button>
                     </div>
                   </motion.div>
                 );
               })}
-              <div ref={messagesEndRef} />
             </div>
 
-            {/* Input */}
-            <div className="p-4 border-t border-border/50 bg-card/50 backdrop-blur z-10">
-              <form onSubmit={handleSendMessage} className="flex gap-2">
-                <button type="button" className="p-3.5 bg-muted rounded-xl text-muted-foreground hover:text-foreground transition-colors">
-                  <FiImage className="w-5 h-5" />
-                </button>
-                <button type="button" className="p-3.5 bg-muted rounded-xl text-muted-foreground hover:text-foreground transition-colors hidden sm:block">
-                  <FiCode className="w-5 h-5" />
-                </button>
-                <input
-                  type="text"
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="Type a message to the global community..."
-                  className="flex-1 bg-card border border-border/50 rounded-xl px-5 text-[15px] focus:outline-none focus:border-blue-500 transition-colors shadow-sm"
-                />
-                <button 
-                  type="submit"
-                  disabled={!newMessage.trim()}
-                  className="px-6 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg shadow-blue-500/20"
-                >
-                  <FiSend className="w-5 h-5 mr-2" /> Send
-                </button>
-              </form>
-            </div>
+
           </>
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center text-center p-8">

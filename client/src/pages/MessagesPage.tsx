@@ -14,7 +14,7 @@ export default function MessagesPage() {
   
   const [activeTab, setActiveTab] = useState<'dms'>('dms');
   const [conversations, setConversations] = useState<IConversation[]>([]);
-  const [activeChat, setActiveChat] = useState<{ id: string, type: 'dm', name: string, avatar: string } | null>(null);
+  const [activeChat, setActiveChat] = useState<{ id: string, type: 'dm' | 'community', name: string, avatar: string } | null>(null);
   
   const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState('');
@@ -126,7 +126,7 @@ export default function MessagesPage() {
     setNewMessage('');
 
     try {
-      let sentMsg;
+      let sentMsg: any;
       if (activeChat.type === 'dm') {
         const conversation = conversations.find(c => c._id === activeChat.id);
         const receiver = conversation?.participants.find(p => p._id !== user?._id);

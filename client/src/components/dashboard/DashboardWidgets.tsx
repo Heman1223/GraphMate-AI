@@ -73,7 +73,7 @@ export default function DashboardWidgets() {
           </div>
         </div>
         <p className="text-sm text-muted-foreground font-medium">Pending Connection Requests</p>
-        <Link to="/network" className="mt-4 block text-xs font-bold text-violet-500 hover:text-violet-400 transition-colors">
+        <Link to="/friends" className="mt-4 block text-xs font-bold text-violet-500 hover:text-violet-400 transition-colors">
           View All Requests &rarr;
         </Link>
       </motion.div>

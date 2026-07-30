@@ -104,6 +104,7 @@ export default function RecommendationsPage() {
                       onConnect={handleConnect}
                       onSkip={handleSkip}
                       active={index === currentIndex}
+                      indexOffset={index - currentIndex}
                       zIndex={recommendations.length - index}
                     />
                   );

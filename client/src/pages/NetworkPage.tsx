@@ -57,7 +57,23 @@ export default function NetworkPage() {
           </div>
         </div>
       ) : data ? (
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 items-start">
+        data.nodes.length <= 1 ? (
+          <div className="flex-1 flex flex-col items-center justify-center text-center py-20 max-w-md mx-auto">
+            <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+              <svg className="w-10 h-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-black text-foreground mb-3">Your network is just getting started</h2>
+            <p className="text-muted-foreground text-sm mb-8">
+              You haven't made any connections yet. Start swiping on the dashboard or search for people with similar interests to build your graph.
+            </p>
+            <a href="/dashboard" className="px-6 py-3 bg-primary text-primary-foreground rounded-full font-bold hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
+              Find your first match
+            </a>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 items-start">
           {/* Main Graph View */}
           <div className="lg:col-span-3 h-[600px] w-full">
             <NetworkGraph data={data} onNodeClick={(id) => setSelectedNodeId(id || null)} />
@@ -185,6 +201,7 @@ export default function NetworkPage() {
             </AnimatePresence>
           </div>
         </div>
+        )
       ) : (
         <div className="text-center py-20 text-xs text-text-secondary-light dark:text-text-secondary-dark">
           Failed to load social graph visualization.

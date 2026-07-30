@@ -260,7 +260,7 @@ export default function OnboardingPage() {
           {/* Footer Navigation */}
           <div className="mt-8 pt-4 border-t border-border flex justify-between items-center bg-background/50 backdrop-blur z-10">
             {step > 1 ? (
-              <Button variant="outline" onClick={handleBack} disabled={saving}>Back</Button>
+              <Button variant="secondary" onClick={handleBack} disabled={saving}>Back</Button>
             ) : (
               <div /> // Spacer
             )}

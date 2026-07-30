@@ -246,7 +246,7 @@ class GraphService {
     users.forEach((u) => userMap.set(u._id.toString(), u));
 
     // Build nodes
-    const AVATAR_STYLES = ['adventurer', 'avataaars', 'big-ears', 'bottts', 'croodles', 'fun-emoji', 'lorelei', 'micah', 'miniavs', 'notionists', 'open-peeps', 'personas', 'pixel-art', 'thumbs'];
+    const AVATAR_COLORS = ['7c3aed', '2563eb', '059669', 'ea580c', 'be185d', '0f766e'];
     
     const nodes: Node[] = [];
     for (const uid of networkUserIds) {
@@ -257,10 +257,10 @@ class GraphService {
         else if (directFriends.includes(uid)) type = 'friend';
 
         let hash = 0;
-        const seed = user.username || 'default';
+        const seed = user.username || user.name || 'default';
         for (let i = 0; i < seed.length; i++) hash = seed.charCodeAt(i) + ((hash << 5) - hash);
-        const style = AVATAR_STYLES[Math.abs(hash) % AVATAR_STYLES.length];
-        const avatar = user.profilePicture || `https://api.dicebear.com/9.x/${style}/svg?seed=${encodeURIComponent(seed)}`;
+        const color = AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+        const avatar = user.profilePicture || `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(seed)}&backgroundColor=${color}&fontFamily=Inter&fontWeight=700&textColor=ffffff`;
 
         nodes.push({
           id: uid,
@@ -305,6 +305,11 @@ class GraphService {
    */
   async getNetworkStats(userId: string): Promise<NetworkStats> {
     const adjacencyList = await this.buildAdjacencyList();
+
+    // Ensure the user is always in the graph
+    if (!adjacencyList.has(userId)) {
+      adjacencyList.set(userId, new Set());
+    }
 
     const directFriends = adjacencyList.get(userId) || new Set();
     const totalNodes = adjacencyList.size;

@@ -23,9 +23,9 @@ const variantClasses: Record<string, string> = {
 };
 
 const sizeClasses: Record<string, string> = {
-  sm: 'px-3 py-1.5 text-xs rounded-md gap-1.5',
-  md: 'px-4 py-2 text-sm rounded-md gap-2',
-  lg: 'px-6 py-3 text-base rounded-md gap-2.5',
+  sm: 'px-3 py-1.5 text-xs rounded-[calc(var(--radius)-4px)] gap-1.5',
+  md: 'px-4 py-2 text-sm rounded-[calc(var(--radius)-2px)] gap-2',
+  lg: 'px-6 py-3 text-base rounded-[var(--radius)] gap-2.5',
 };
 
 export default function Button({

@@ -98,6 +98,7 @@ export default function SwipeRecommendations() {
                       onConnect={handleConnect}
                       onSkip={handleSkip}
                       active={index === currentIndex}
+                      indexOffset={index - currentIndex}
                       zIndex={recommendations.length - index}
                     />
                   );
