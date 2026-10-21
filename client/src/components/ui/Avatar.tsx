@@ -41,7 +41,7 @@ export default function Avatar({
     .slice(0, 2);
 
   return (
-    <div className={cn('relative inline-flex flex-shrink-0', className)}>
+    <div className={cn('relative inline-flex flex-shrink-0 items-center justify-center', className)}>
       {!imgError ? (
         <img
           src={avatarUrl}
@@ -49,14 +49,16 @@ export default function Avatar({
           onError={() => setImgError(true)}
           className={cn(
             'rounded-full object-cover ring-2 ring-background',
-            sizeClasses[size]
+            sizeClasses[size],
+            className
           )}
         />
       ) : (
         <div
           className={cn(
             'rounded-full flex items-center justify-center font-semibold bg-primary text-primary-foreground',
-            sizeClasses[size]
+            sizeClasses[size],
+            className
           )}
         >
           {initials || '?'}

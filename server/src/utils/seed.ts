@@ -178,13 +178,14 @@ async function seed(): Promise<void> {
     const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash('password123', salt);
 
-    // Generate 75 demo users
-    console.log('👥 Creating 75 demo users...');
+    // Generate demo users
+    const USER_COUNT = 150;
+    console.log(`👥 Creating ${USER_COUNT} demo users...`);
     const usersData: any[] = [];
     const usedUsernames = new Set<string>();
     const usedEmails = new Set<string>();
 
-    for (let i = 0; i < 75; i++) {
+    for (let i = 0; i < USER_COUNT; i++) {
       const isMale = Math.random() > 0.45;
       const firstName = isMale ? randomItem(firstNamesMale) : randomItem(firstNamesFemale);
       const lastName = randomItem(lastNames);
@@ -231,13 +232,14 @@ async function seed(): Promise<void> {
     const users = await User.insertMany(usersData);
     console.log(`✅ Created ${users.length} users\n`);
 
-    // Create ~150 random accepted friendships
-    console.log('🤝 Creating ~150 accepted friendships...');
+    // Create random accepted friendships
+    const ACCEPTED_COUNT = 400;
+    console.log(`🤝 Creating ~${ACCEPTED_COUNT} accepted friendships...`);
     const friendshipPairs = new Set<string>();
     const friendshipsData: any[] = [];
 
     let accepted = 0;
-    while (accepted < 150) {
+    while (accepted < ACCEPTED_COUNT) {
       const idx1 = Math.floor(Math.random() * users.length);
       const idx2 = Math.floor(Math.random() * users.length);
 
@@ -255,10 +257,11 @@ async function seed(): Promise<void> {
       accepted++;
     }
 
-    // Create ~30 pending friend requests
-    console.log('📨 Creating ~30 pending friend requests...');
+    // Create pending friend requests
+    const PENDING_COUNT = 75;
+    console.log(`📨 Creating ~${PENDING_COUNT} pending friend requests...`);
     let pending = 0;
-    while (pending < 30) {
+    while (pending < PENDING_COUNT) {
       const idx1 = Math.floor(Math.random() * users.length);
       const idx2 = Math.floor(Math.random() * users.length);
 

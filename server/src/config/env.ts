@@ -10,6 +10,7 @@ interface EnvConfig {
   PORT: number;
   AI_SERVICE_URL: string;
   NODE_ENV: string;
+  CLIENT_URL: string;
 }
 
 const env: EnvConfig = {
@@ -19,6 +20,7 @@ const env: EnvConfig = {
   PORT: parseInt(process.env.PORT || '5000', 10),
   AI_SERVICE_URL: process.env.AI_SERVICE_URL || 'http://localhost:8000',
   NODE_ENV: process.env.NODE_ENV || 'development',
+  CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
 };
 
 export default env;

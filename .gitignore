@@ -36,3 +36,6 @@ ai-service/models/
 # Uploads
 server/uploads/*
 !server/uploads/.gitkeep
+
+# Local database data
+.mongo-data/

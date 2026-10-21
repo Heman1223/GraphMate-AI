@@ -22,10 +22,24 @@ import communityRoutes from './routes/community.routes';
 const app = express();
 const httpServer = http.createServer(app);
 
+// ─── CORS Origins ────────────────────────────────────────────────────────────
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  env.CLIENT_URL,
+].filter(Boolean);
+
 // ─── Socket.IO ───────────────────────────────────────────────────────────────
 const io = new Server(httpServer, {
   cors: {
-    origin: ['http://localhost:5173', 'http://localhost:3000'],
+    origin: (origin, callback) => {
+      // allow requests with no origin (like mobile apps or curl) or if in allowed list
+      if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app') || origin.endsWith('.onrender.com')) {
+        callback(null, true);
+      } else {
+        callback(null, true); // fallback permissive for production preview links
+      }
+    },
     credentials: true,
   },
 });
@@ -58,7 +72,13 @@ io.on('connection', (socket) => {
 // ─── CORS ────────────────────────────────────────────────────────────────────
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000'],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app') || origin.endsWith('.onrender.com')) {
+        callback(null, true);
+      } else {
+        callback(null, true);
+      }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],

@@ -1,0 +1,39 @@
+services:
+  # ─── Python AI Microservice ─────────────────────────────────────────────────
+  - type: web
+    name: graphmate-ai-service
+    env: docker
+    dockerContext: ./ai-service
+    dockerfilePath: ./ai-service/Dockerfile
+    plan: free
+    region: oregon
+    healthCheckPath: /health
+
+  # ─── Node.js Express Backend ────────────────────────────────────────────────
+  - type: web
+    name: graphmate-backend
+    env: node
+    rootDir: server
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    plan: free
+    region: oregon
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: MONGODB_URI
+        sync: false # Set in Render dashboard (MongoDB Atlas connection string)
+      - key: AI_SERVICE_URL
+        fromService:
+          type: web
+          name: graphmate-ai-service
+          property: host
+      - key: CLIENT_URL
+        sync: false # Set to your deployed frontend URL (e.g. https://your-app.vercel.app)
